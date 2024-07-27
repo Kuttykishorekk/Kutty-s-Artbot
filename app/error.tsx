@@ -1,42 +1,40 @@
 'use client' // Error components must be Client Components
 
-import { useEffect } from 'react'
-import PageTitle from './_components/PageTitle'
-import Linker from 'app/_components/Linker'
-import ContentWrapper from './_components/ContentWrapper'
-import MaxWidth from './_components/MaxWidth'
-import { basePath } from 'BASE_PATH'
+import { useEffect } from 'react';
+import PageTitle from './_components/PageTitle';
+import Linker from 'app/_components/Linker';
+import ContentWrapper from './_components/ContentWrapper';
+import MaxWidth from './_components/MaxWidth';
+import { basePath } from 'BASE_PATH';
 
-export default function Error({
-  error
-}: {
-  error: Error & { digest?: string }
-}) {
+interface ErrorProps {
+  error: Error & { digest?: string };
+}
+
+export default function Error({ error }: ErrorProps) {
   useEffect(() => {
-    console.error(error)
-  }, [error])
+    console.error('Error encountered:', error);
+  }, [error]);
 
   return (
     <ContentWrapper>
       <MaxWidth>
         <PageTitle>An unexpected error has occurred.</PageTitle>
-        <div className="mb-[8px]">
-          kutty's artbot encountered an error while attempting to process this request.
+        <div className="mb-2">
+          We encountered an issue while processing your request.
         </div>
-        <div className="mb-[8px]">
-          Otherwise, this is probably Dave&apos;s fault. An error log has
-          automatically been created.
+        <div className="mb-2">
+          An error log has been automatically created for us to review.
         </div>
-        <div className="mb-[8px]">
-          Please hit the{' '}
-          <Linker href={`${basePath}/contact`}>contact form</Linker> if
-          you&apos;d like to provide more information about what happened or{' '}
+        <div className="mb-2">
+          If you'd like to provide more information, please visit the{' '}
+          <Linker href={`${basePath}/contact`}>contact form</Linker> or the{' '}
           <Linker
             href="https://discord.com/channels/781145214752129095/1107628882783391744"
             target="_blank"
             rel="noopener noreferrer"
           >
-            visit the kutty's artbot channel
+            kutty's artbot channel
           </Linker>{' '}
           on the{' '}
           <Linker
@@ -45,10 +43,9 @@ export default function Error({
             rel="noreferrer"
           >
             Stable Horde Discord server
-          </Linker>{' '}
-          .
+          </Linker>.
         </div>
       </MaxWidth>
     </ContentWrapper>
-  )
+  );
 }
