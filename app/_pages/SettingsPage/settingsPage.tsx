@@ -14,10 +14,9 @@ import { sleep } from 'app/_utils/sleep'
 import { clientHeader, getApiHostServer } from 'app/_utils/appUtils'
 import MenuButton from 'app/_components/MenuButton'
 import AppSettings from 'app/_data-models/AppSettings'
-import { useEffectOnce } from 'app/_hooks/useEffectOnce'
 import AiHordeSettingsPanel from './AiHordeSettingsPanel'
 import WorkerSettingsPanel from './WorkerSettingsPanel'
-import artbotSettingsPanel from './ArtbotSettingsPanel'
+import ArtbotSettingsPanel from './ArtbotSettingsPanel' // Fixed import
 import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 import DropDownMenu from 'app/_components/DropDownMenu/dropDownMenu'
 import DropDownMenuItem from 'app/_components/DropDownMenuItem'
@@ -103,59 +102,43 @@ const SettingsPage = () => {
 
   const handleSwitchSelect = (key: string, value: boolean) => {
     AppSettings.save(key, value)
-    setComponentState({ [key]: value })
+    setComponentState((prevState) => ({ ...prevState, [key]: value }))
   }
 
   useEffect(() => {
-    const updateObj: any = {}
+    const updateObj: any = {
+      allowNsfwImages: AppSettings.get('allowNsfwImages') || false,
+      apiKey: AppSettings.get('apiKey') || '',
+      runInBackground: AppSettings.get('runInBackground') || false,
+      enableGallerySwipe: AppSettings.get('enableGallerySwipe') !== false,
+      maxConcurrency: AppSettings.get('maxConcurrency') || 5,
+      imagesPerPage: AppSettings.get('imagesPerPage') || 50,
+      theme: AppSettings.get('theme') || 'system',
+      saveInputOnCreate: AppSettings.get('saveInputOnCreate') || false, // DEPRECATE
+      savePromptOnCreate: AppSettings.get('savePromptOnCreate') || false,
+      saveSeedOnCreate: AppSettings.get('saveSeedOnCreate') || false,
+      saveCanvasOnCreate: AppSettings.get('saveCanvasOnCreate') || false,
+      disableNewImageNotification: AppSettings.get('disableNewImageNotification') || false,
+      stayOnCreate: AppSettings.get('stayOnCreate') || false,
+      useBeta: AppSettings.get('useBeta') || false,
+      useWorkerId: AppSettings.get('useWorkerId') || '',
+      useTrusted: AppSettings.get('useTrusted') || false,
+      slow_workers: AppSettings.get('slow_workers') !== false,
+      disableSnowflakes: AppSettings.get('disableSnowflakes') || false,
+      shareImagesExternally: AppSettings.get('shareImagesExternally') || false,
+      imageDownloadFormat: AppSettings.get('imageDownloadFormat') || 'jpg'
+    }
 
-    updateObj.allowNsfwImages = AppSettings.get('allowNsfwImages') || false
-    updateObj.apiKey = AppSettings.get('apiKey') || ''
-    updateObj.runInBackground = AppSettings.get('runInBackground') || false
-    updateObj.enableGallerySwipe =
-      AppSettings.get('enableGallerySwipe') === false ? false : true
-
-    updateObj.maxConcurrency = AppSettings.get('maxConcurrency') || 5
-    updateObj.imagesPerPage = AppSettings.get('imagesPerPage') || 50
-    updateObj.theme = AppSettings.get('theme') || 'system'
-    updateObj.saveInputOnCreate = AppSettings.get('saveInputOnCreate') || false // DEPRECATE
-    updateObj.savePromptOnCreate =
-      AppSettings.get('savePromptOnCreate') || false
-    updateObj.saveSeedOnCreate = AppSettings.get('saveSeedOnCreate') || false
-    updateObj.saveCanvasOnCreate =
-      AppSettings.get('saveCanvasOnCreate') || false
-
-    updateObj.disableNewImageNotification =
-      AppSettings.get('disableNewImageNotification') || false
-    updateObj.stayOnCreate = AppSettings.get('stayOnCreate') || false
-    updateObj.useBeta = AppSettings.get('useBeta') || false
-    updateObj.useWorkerId = AppSettings.get('useWorkerId') || ''
-    updateObj.useTrusted = AppSettings.get('useTrusted') || false
-    updateObj.slow_workers =
-      AppSettings.get('slow_workers') === false ? false : true
-    updateObj.disableSnowflakes = AppSettings.get('disableSnowflakes') || false
-    updateObj.shareImagesExternally =
-      AppSettings.get('shareImagesExternally') || false
-    updateObj.imageDownloadFormat =
-      AppSettings.get('imageDownloadFormat') || 'jpg'
-
-    // if (!userStore.username) {
-    //   AppSettings.save('shareImagesExternally', true)
-    //   updateObj.shareImagesExternally = true
-    // }
-
-    setComponentState({ ...updateObj })
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setComponentState(updateObj)
   }, [])
 
   const fetchWorkerData = useCallback(async () => {
     if (Array.isArray(worker_ids)) {
       let workerInfo: IWorkers = {}
 
-      for (const idx in worker_ids) {
+      for (const id of worker_ids) {
         const workerRes = await fetch(
-          `${getApiHostServer()}/api/v2/workers/${worker_ids[idx]}`,
+          `${getApiHostServer()}/api/v2/workers/${id}`,
           {
             headers: {
               'Content-Type': 'application/json',
@@ -164,8 +147,7 @@ const SettingsPage = () => {
           }
         )
         const workerData = await workerRes.json()
-        const { id } = workerData
-        workerInfo[id] = { ...workerData }
+        workerInfo[id] = workerData
 
         await sleep(500)
       }
@@ -180,15 +162,12 @@ const SettingsPage = () => {
     }
   }, [fetchWorkerData, searchParams])
 
-  useEffectOnce(() => {
-    setTimeout(() => {
-      const apiKey = AppSettings.get('apiKey')
-
-      if (!apiKey) {
-        handleSwitchSelect('shareImagesExternally', true)
-      }
-    }, 250)
-  })
+  useEffect(() => {
+    const apiKey = AppSettings.get('apiKey')
+    if (!apiKey) {
+      handleSwitchSelect('shareImagesExternally', true)
+    }
+  }, [])
 
   return (
     <div className="pb-[88px]">
@@ -209,15 +188,9 @@ const SettingsPage = () => {
               active={componentState.showOptionsMenu}
               title="Click for more settings"
               onClick={() => {
-                if (componentState.showOptionsMenu) {
-                  setComponentState({
-                    showOptionsMenu: false
-                  })
-                } else {
-                  setComponentState({
-                    showOptionsMenu: true
-                  })
-                }
+                setComponentState((prevState) => ({
+                  showOptionsMenu: !prevState.showOptionsMenu
+                }))
               }}
             >
               <div className="flex flex-row gap-1 pr-2">
@@ -226,60 +199,35 @@ const SettingsPage = () => {
                 ) : (
                   <IconChevronRight />
                 )}
-                {!searchParams?.get('panel') &&
-                  `
-                AI Horde Settings
-                `}
-                {searchParams?.get('panel') === 'workers' && `Manage Workers`}
-                {searchParams?.get('panel') === 'prefs' && `artbot Prefs`}
-                {searchParams?.get('panel') === 'import-export' && `Export`}
+                {searchParams?.get('panel') === 'workers' ? 'Manage Workers' :
+                 searchParams?.get('panel') === 'prefs' ? 'artbot Prefs' :
+                 searchParams?.get('panel') === 'import-export' ? 'Export' :
+                 'AI Horde Settings'}
               </div>
             </MenuButton>
             {componentState.showOptionsMenu && (
               <DropDownMenu
                 handleClose={() => {
-                  setComponentState({
-                    showOptionsMenu: false
-                  })
+                  setComponentState({ showOptionsMenu: false })
                 }}
               >
                 <DropDownMenuItem
-                  onClick={() => {
-                    router.push(
-                      //@ts-ignore
-                      `/settings`
-                    )
-                  }}
+                  onClick={() => router.push('/settings')}
                 >
                   AI Horde settings
                 </DropDownMenuItem>
                 <DropDownMenuItem
-                  onClick={() => {
-                    router.push(
-                      //@ts-ignore
-                      `/settings?panel=workers`
-                    )
-                  }}
+                  onClick={() => router.push('/settings?panel=workers')}
                 >
                   Manage workers
                 </DropDownMenuItem>
                 <DropDownMenuItem
-                  onClick={() => {
-                    router.push(
-                      //@ts-ignore
-                      `/settings?panel=prefs`
-                    )
-                  }}
+                  onClick={() => router.push('/settings?panel=prefs')}
                 >
                   artbot preferences
                 </DropDownMenuItem>
                 <DropDownMenuItem
-                  onClick={() => {
-                    router.push(
-                      //@ts-ignore
-                      `/settings?panel=import-export`
-                    )
-                  }}
+                  onClick={() => router.push('/settings?panel=import-export')}
                 >
                   Import / Export
                 </DropDownMenuItem>
@@ -327,16 +275,14 @@ const SettingsPage = () => {
             />
           )}
           {searchParams?.get('panel') === 'prefs' && (
-            <artbotSettingsPanel
+            <ArtbotSettingsPanel
               componentState={componentState}
               setComponentState={setComponentState}
             />
           )}
-          {searchParams?.get('panel') === 'import-export' ? (
-            <>
-              <ImportExportPanel />
-            </>
-          ) : null}
+          {searchParams?.get('panel') === 'import-export' && (
+            <ImportExportPanel />
+          )}
         </OptionsPanel>
       </SettingsWrapper>
     </div>
