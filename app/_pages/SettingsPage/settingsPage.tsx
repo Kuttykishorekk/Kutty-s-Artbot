@@ -16,7 +16,7 @@ import MenuButton from 'app/_components/MenuButton'
 import AppSettings from 'app/_data-models/AppSettings'
 import AiHordeSettingsPanel from './AiHordeSettingsPanel'
 import WorkerSettingsPanel from './WorkerSettingsPanel'
-import ArtbotSettingsPanel from './artbotSettingsPanel' // Fixed import
+import ArtBotSettingsPanel from './ArtBotSettingsPanel' // Fixed import
 import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 import DropDownMenu from 'app/_components/DropDownMenu/dropDownMenu'
 import DropDownMenuItem from 'app/_components/DropDownMenuItem'
@@ -275,7 +275,7 @@ const SettingsPage = () => {
             />
           )}
           {searchParams?.get('panel') === 'prefs' && (
-            <ArtbotSettingsPanel
+            <ArtBotSettingsPanel
               componentState={componentState}
               setComponentState={setComponentState}
             />
