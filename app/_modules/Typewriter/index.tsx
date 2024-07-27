@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Typewriter from './typewriter';
 import styles from './typewriter.module.css';
+import Image from 'next/image';
 import image0 from './images/astronaut.jpg';
 import image1 from './images/amazon.jpg';
 import image2 from './images/himalayas.jpg';
@@ -18,8 +19,6 @@ interface ImageItem {
 }
 
 const images: ImageItem[] = [
-  // Define your images as before
-  // ...
   {
     file: image0,
     prompt: 'An astronaut resting on Mars in a beach chair',
@@ -112,9 +111,10 @@ export default function PromptTypewriter() {
         <div
           className={`${styles.ImageWrapper} ${isHidden ? styles.hidden : styles.visible}`}
         >
-          <img
+          <Image
             alt="Prompt-related image"
-            src={shuffled[promptIndex].file.src}
+            src={shuffled[promptIndex].file}
+            layout="responsive"
             style={{ borderRadius: '4px', width: '100%' }}
           />
         </div>
