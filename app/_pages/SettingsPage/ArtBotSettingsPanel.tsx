@@ -16,7 +16,7 @@ import FlexCol from 'app/_components/FlexCol'
 import { updateTheme } from 'app/_modules/AppTheme/controller'
 import { db } from 'app/_db/dexie'
 
-const artbotSettingsPanel = ({ componentState, setComponentState }: any) => {
+const ArtBotSettingsPanel = ({ componentState, setComponentState }: any) => {
   const [processType, setProcessType] = useState<string | null>(null)
   const [processState, setProcessState] = useState('')
   const [totalToProcess, setTotalToProcess] = useState(0)
@@ -49,12 +49,12 @@ const artbotSettingsPanel = ({ componentState, setComponentState }: any) => {
         />
       )}
       <Section>
-        <PageTitle as="h2">artbot Preferences</PageTitle>
+        <PageTitle as="h2">ArtBot Preferences</PageTitle>
       </Section>
       <Section pb={12}>
         <MaxWidth style={{ maxWidth: '240px' }}>
           <SubSectionTitle>
-            <strong>artbot Theme</strong>
+            <strong>ArtBot Theme</strong>
           </SubSectionTitle>
           <div className="flex flex-row gap-2 items-center">
             <Select
@@ -171,7 +171,7 @@ const artbotSettingsPanel = ({ componentState, setComponentState }: any) => {
         <SubSectionTitle>
           <strong>Preferred image format</strong>
           <div className="block w-full mt-2 mb-2 text-xs">
-            Choose your preferred format when downloading images from artbot
+            Choose your preferred format when downloading images from ArtBot
           </div>
         </SubSectionTitle>
         <MaxWidth style={{ maxWidth: '240px' }}>
@@ -207,7 +207,7 @@ const artbotSettingsPanel = ({ componentState, setComponentState }: any) => {
         <div
           style={{ fontSize: '12px', maxWidth: '512px', paddingLeft: '64px' }}
         >
-          By default, artbot only runs in the active browser tab in order to try
+          By default, ArtBot only runs in the active browser tab in order to try
           and help prevent your IP address from being throttled. You may disable
           this behavior if you wish.
         </div>
@@ -246,7 +246,7 @@ const artbotSettingsPanel = ({ componentState, setComponentState }: any) => {
           style={{ fontSize: '12px', maxWidth: '512px', paddingLeft: '64px' }}
         >
           This option disabled the new image notification toast that pops up in
-          the top right corner of the web app when artbot receives a new image
+          the top right corner of the web app when ArtBot receives a new image
           from the AI Horde backend.
         </div>
       </Section>
@@ -254,7 +254,7 @@ const artbotSettingsPanel = ({ componentState, setComponentState }: any) => {
         <SubSectionTitle>
           <strong>Generate thumbnails?</strong>
           <div className="block w-full mt-2 mb-2 text-xs">
-            artbot recently implemented image thumbnails to help the image
+            ArtBot recently implemented image thumbnails to help the image
             gallery become more performant, especially on mobile devices. Older
             images, created before 2023.03.06, will not have image thumbnails.
             If you wish, you may manually kick off this process.
@@ -292,7 +292,7 @@ const artbotSettingsPanel = ({ componentState, setComponentState }: any) => {
           <strong>Download debugging logs?</strong>
           <div className="block w-full mt-2 mb-2 text-xs">
             This is really only used in case you&apos;re encountering some
-            issues with artbot and are asked to provide some additional logs.
+            issues with ArtBot and are asked to provide some additional logs.
           </div>
         </SubSectionTitle>
         <MaxWidth style={{ maxWidth: '240px' }}>
@@ -308,9 +308,9 @@ const artbotSettingsPanel = ({ componentState, setComponentState }: any) => {
       </Section>
       <Section pb={12}>
         <SubSectionTitle>
-          <strong>Reset artbot settings in local storage?</strong>
+          <strong>Reset ArtBot settings in local storage?</strong>
           <div className="block w-full mt-2 mb-2 text-xs">
-            In some instances, artbot settings could have been corrupted. Use
+            In some instances, ArtBot settings could have been corrupted. Use
             this option to reset all user settings found on this settings page
             (e.g., API key, image download preferences, stored input values,
             etc).
@@ -390,4 +390,4 @@ const artbotSettingsPanel = ({ componentState, setComponentState }: any) => {
   )
 }
 
-export default artbotSettingsPanel
+export default ArtBotSettingsPanel
