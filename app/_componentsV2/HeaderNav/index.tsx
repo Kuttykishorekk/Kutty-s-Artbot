@@ -14,6 +14,7 @@ import UserKudos from './UserKudos'
 import MenuButton from './MenuButton'
 import styles from './headerNav.module.css'
 import UserWarning from './UserWarning'
+import Image from 'next/image'
 
 function ListItem({
   href,
@@ -64,14 +65,14 @@ export function HeaderNav() {
             className="flex items-center gap-2"
             href="/"
           >
-            <img
+            <Image
               src={`${basePath}/artbot-logo.png`}
               height={90}
               width={90}
               alt="AI artbot logo"
               className="h-15 w-12"
             />
-            <span className={styles.artbotText}>Kutty's artbot</span>
+            <span className={styles.artbotText}>Kutty&apos;s artbot</span>
           </Link>
         </div>
       </div>
@@ -185,7 +186,7 @@ export function HeaderNav() {
                 <ListItem
                   href="/profile"
                   title="Profile"
-                  description="Information about images you've requested and / or
+                  description="Information about images you&apos;ve requested and / or
                   generated on the Stable Horde."
                   onClose={closeDropdown}
                 />
@@ -227,7 +228,7 @@ export function HeaderNav() {
                 />
                 <ListItem
                   href="/settings?panel=prefs"
-                  title="artbot settings"
+                  title="Artbot settings"
                   description="Preferences related to artbot."
                   onClose={closeDropdown}
                 />
