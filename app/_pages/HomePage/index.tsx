@@ -9,7 +9,7 @@ import HomePageContentWrapper from 'app/_components/HomePageContentWrapper'
 import { basePath } from 'BASE_PATH'
 
 export default function HomePage() {
-  const highlightedTextRef = useRef(null)
+  const highlightedTextRef = useRef<HTMLSpanElement | null>(null)
 
   useEffect(() => {
     const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1']
