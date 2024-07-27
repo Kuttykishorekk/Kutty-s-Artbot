@@ -6,7 +6,7 @@ import AppSettings from 'app/_data-models/AppSettings';
 import MaxWidth from 'app/_components/MaxWidth';
 import Select from 'app/_components/Select';
 import Linker from 'app/_components/Linker';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Button } from 'app/_components/Button';
 import { generateThumbnails } from 'app/_utils/db';
 import { deletePendingJobs } from 'app/_controllers/pendingJobsCache';
@@ -79,7 +79,7 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
       {componentState.showResetConfirmation && (
         <AlertDialogBox
           title="Are you sure you want to reset your preferences?"
-          message="This option will reset all user settings found on this settings page. (e.g., API key, image download preferences, stored input values, etc). Your images will be safe. However, please save your API key before continuing."
+          message="This option will reset all user settings found on this settings page (e.g., API key, image download preferences, stored input values, etc). Your images will be safe. However, please save your API key before continuing."
           onConfirmClick={handleResetPreferences}
           closeModal={() => setComponentState({ showResetConfirmation: false })}
         />
