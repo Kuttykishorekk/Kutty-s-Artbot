@@ -1,0 +1,54 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+/dist
+
+# release files
+release.tar.gz
+
+# misc
+/public/ads.txt
+/x-build-scripts/announce.js
+.DS_Store
+build_info.json
+*.pem
+/analyze
+build.sh
+release.sh
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Local dev DB files
+/__local_db/*
+# But do not ignore _README.md
+!/__local_db/_README.md
+
+.vscode

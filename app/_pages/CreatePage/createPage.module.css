@@ -1,0 +1,97 @@
+/* Container for the entire page */
+.CreatePageLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  font-family: 'Arial', sans-serif; /* Modern, clean font */
+}
+
+.pageTitle {
+  font-weight: bold;
+  color: #690303; /* Make text bold */
+  font-size: 1.5rem;
+  font-family: Bungee Spice; /* Adjust size as needed */
+  transition: transform 0.3s ease-in-out, color 0.3s ease-in-out; /* Add transition effects */
+}
+
+.pageTitleHover:hover {
+  color: #690303; /* Change color on hover */
+  transform: scale(1.05); /* Slightly enlarge the text on hover */
+}
+
+
+/* Panel for creating new content */
+.CreatePanel {
+  width: 100%;
+  max-width: 800px;
+  background-color: #ffffff; /* Use a cleaner white */
+  border-radius: 12px; /* Slightly rounded corners */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* More subtle shadow */
+  padding: 24px; /* More padding for a spacious look */
+  margin-bottom: 24px; /* Increased margin */
+  transition: box-shadow 0.3s ease-in-out; /* Smooth shadow transition */
+}
+
+.CreatePanel:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+/* Panel for actions */
+.ActionPanel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px; /* More padding */
+  background-color: #000000; /* Primary color */
+  color: #ffffff;
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* More subtle shadow */
+  margin-bottom: 24px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.ActionPanel button {
+  background-color: #7a0505; /* Darker primary color */
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px; /* Larger button padding */
+  border-radius: 6px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+.ActionPanel button:hover {
+  background-color: #7a0808; /* Darker shade on hover */
+}
+
+/* Panel for pending items */
+.PendingPanel {
+  width: 100%;
+  max-width: 800px;
+  background-color: #ffffff;
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* More subtle shadow */
+  padding: 24px; /* Larger padding */
+  transition: box-shadow 0.3s ease-in-out; /* Smooth shadow transition */
+}
+
+.PendingPanel:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .CreatePanel,
+  .ActionPanel,
+  .PendingPanel {
+    width: 100%;
+    padding: 12px; /* Adjusted padding for smaller screens */
+    margin-bottom: 16px; /* Adjusted margin */
+  }
+
+  .ActionPanel {
+    flex-direction: column; /* Stack buttons vertically on small screens */
+  }
+}

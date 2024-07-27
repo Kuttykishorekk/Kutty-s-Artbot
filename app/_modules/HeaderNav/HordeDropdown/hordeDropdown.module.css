@@ -1,0 +1,30 @@
+.HordeDropdown {
+  background-color: var(--modal-background);
+  bottom: 0;
+  height: 385px;
+  left: 0;
+  overflow-y: auto;
+  padding: 8px;
+  position: fixed;
+  right: 0;
+  top: 42px;
+}
+
+@media (min-width: 640px) {
+  .HordeDropdown {
+    left: -320px;
+    max-width: 320px;
+    position: absolute;
+    top: 24px;
+    width: 400px;
+  }
+}
+
+.separator {
+  border-bottom-style: dotted;
+  width: 100%;
+  padding-top: 12px;
+  margin-bottom: 12px;
+  border-bottom-color: var(--input-text);
+  border-bottom-width: 1px;
+}

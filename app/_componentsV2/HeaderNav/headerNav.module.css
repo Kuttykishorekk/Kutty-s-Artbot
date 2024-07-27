@@ -1,0 +1,38 @@
+.HeaderNav {
+  align-items: center;
+  background-color: var(--body-color);
+  display: flex;
+  flex-direction: row;
+  height: var(--headerNav-height);
+  justify-content: space-between;
+  left: 0;
+  padding: env(safe-area-inset-top) 8px 0 8px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: var(--zIndex-navBar);
+}
+
+.artbotText {
+  color: #4a4848; /* Desired color */
+  font-size: 1.2rem; /* Adjusted size */
+  font-weight: 900; /* Extra bold */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  font-family: 'Poppins', sans-serif; /* High-quality font */
+}
+
+.WorkerDetails {
+  background-color: #7d7d7d;
+  border-radius: 8px;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 600;
+  padding: 8px;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .WorkerDetails {
+    background-color: #7d7d7d;
+  }
+} */

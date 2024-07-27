@@ -1,0 +1,59 @@
+@keyframes colorSplash {
+  0% {
+    color: #FF5733; /* Initial color */
+    transform: scale(1);
+  }
+  50% {
+    color: #33FF57; /* Color 2 */
+    transform: scale(1.2); /* Expand */
+  }
+  100% {
+    color: #FF5733; /* Back to initial color */
+    transform: scale(1);
+  }
+}
+
+.HeroTitle {
+  font-size: 64px;
+  line-height: 80px;
+  margin: 0;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.HighlightedText {
+  font-weight: 700;
+  animation: colorSplash 5s infinite; /* Apply the splash animation */
+}
+
+.Blurb {
+  font-size: 18px;
+  line-height: 22px;
+  margin: 0 auto 12px auto;
+  max-width: 980px;
+  text-align: center;
+  width: 100%;
+}
+
+.Link {
+  text-decoration: underline;
+  color: #6e080b;
+  font-weight: bold;
+}
+
+.TypewriterContainer {
+  margin: 24px auto 0 auto;
+  max-width: 1400px;
+}
+
+@media (min-width: 640px) {
+  .HeroTitle {
+    font-size: 70px;
+    line-height: 100px;
+  }
+
+  .Blurb {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}

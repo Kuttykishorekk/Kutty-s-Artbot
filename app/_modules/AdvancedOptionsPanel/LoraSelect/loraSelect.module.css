@@ -1,0 +1,135 @@
+.lora-model-box {
+  background-color: var(--accent-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+  padding: 8px;
+  width: 100%;
+  flex-grow: 1;
+}
+
+.lora-model-box:last-child {
+  margin-bottom: 0;
+}
+
+.lora-name {
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.lora-select-modal {
+  background-color: var(--input-background);
+  position: absolute;
+  top: 42px;
+  right: 0;
+  height: 380px;
+  border-radius: 4px;
+  border: 2px solid var(--card-background);
+  z-index: 31;
+}
+
+.slider-wrapper {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .lora-select-modal {
+    width: 500px;
+  }
+}
+
+
+@media (min-width: 800px) {
+  .input-width {
+    justify-content: flex-end;
+    max-width: 120px;
+  }
+
+  .slider-wrapper {
+    display: block;
+    flex-grow: 1;
+    margin-right: 12px;
+  }
+}
+
+.StyledClose {
+  cursor: pointer;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+
+.filter-preset {
+  margin: 32px 16px 0 16px;
+}
+
+.lora-select-wrapper {
+  position: absolute;
+  top: 84px;
+  bottom: 8px;
+  left: 16px;
+  right: 16px;
+  overflow-y: auto;
+
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+}
+
+.lora-select-wrapper * {
+  -ms-overflow-style: none;
+}
+
+.lora-select-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.keyword-tag {
+  align-items: center;
+  background-color: #6e080b;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  column-gap: 4px;
+  font-size: 12px;
+  padding: 4px 12px;
+}
+
+.remove-keyword {
+  background-color: red;
+}
+
+@media (min-width: 800px) {
+  .lora-btn {
+    height: 30px;
+    width: 30px;
+    min-width: unset;
+    padding: 4px;
+  }
+}
+
+.lora-select-label {
+  align-items: center;
+  display: flex;
+  column-gap: 2px;
+  flex-direction: row;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media (min-width: 800px) {
+  .lora-select-label {
+    font-size: 14px;
+    font-weight: 700;
+    min-width: var(--options-label-width);
+    width: var(--options-label-width);
+  }
+}

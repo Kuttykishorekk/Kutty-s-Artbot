@@ -1,0 +1,9 @@
+/* Global Styles */
+:root {
+    --main-color: #33FF57; /* Primary accent color */
+    --background-color: #f4f4f4; /* Light background color */
+    --text-color: #333; /* Default text color */
+    --link-color: #007BFF; /* Link color */
+    --header-background: #fff; /* Header background */
+    --shadow-color: rgba(0, 0, 0, 0.1); /* Box shadow color */
+  }

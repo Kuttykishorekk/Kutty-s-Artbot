@@ -1,0 +1,160 @@
+.PendingPanelWrapper {
+  display: none;
+  max-width: 240px;
+  padding: 16px 0 16px 16px;
+  position: sticky;
+  top: 56px;
+  vertical-align: top;
+  width: 100%;
+}
+
+@media (min-width: 756px) {
+  .PendingPanelWrapper {
+    display: inline-block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .PendingPanelWrapper {
+    max-width: 320px;
+  }
+}
+
+.NoRequests {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+/* @media (min-width: 1024px) {
+  .PendingPanelWrapper {
+    right: calc(100% - 1024);
+  }
+} */
+
+.PendingImagesContainer {
+  border-radius: 4px;
+  border: 1px solid rgb(126, 90, 108);
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  gap: 8px;
+  height: calc(100vh - 154px);
+  margin-top: 8px;
+  max-width: 320px;
+  overflow-y: hidden;
+  padding: 8px;
+  position: relative;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.PendingImagesContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.PendingJobCard {
+  /* background-color: var(--accent-color); */
+  border-radius: 4px;
+  padding: 4px;
+  width: 100%;
+}
+
+.imageContainer {
+  display: flex;
+  cursor: pointer;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  max-width: 320px;
+  overflow: hidden;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+}
+
+.imageContainer>div {
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+
+.imageContainer:hover>div {
+  background-color: rgb(0, 0, 0, 0.6);
+  opacity: 1;
+}
+
+.ImageStatus {
+  background-color: unset !important;
+  bottom: 4px;
+  color: white;
+  font-size: 12px;
+  opacity: 1 !important;
+  position: absolute;
+  text-align: center;
+  z-index: var(--zIndex-default);
+}
+
+.favorited {
+  /* background-color: unset !important; */
+  opacity: 1 !important;
+}
+
+.favorited:hover {
+  opacity: 1 !important;
+}
+
+.CloseButton {
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 8px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  user-select: none;
+}
+
+.FavButton {
+  /* background-color: rgb(0, 0, 0, 0.6); */
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 8px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  user-select: none;
+}
+
+.TrashButton {
+  background-color: rgba(195, 47, 47, 0.6) !important;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 8px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  user-select: none;
+}
+
+.virtual-list {
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.virtual-list::-webkit-scrollbar {
+  display: none;
+}
