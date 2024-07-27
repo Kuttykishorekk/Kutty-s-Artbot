@@ -4,7 +4,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-import PageTitle from 'app/_components/PageTitle'
 import { loadEditPrompt, SourceProcessing } from 'app/_utils/promptUtils'
 import { getBase64FromDraw } from 'app/_store/canvasStore'
 import { getDefaultPrompt } from 'app/_utils/db'
