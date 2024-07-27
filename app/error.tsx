@@ -1,4 +1,4 @@
-'use client' // Error components must be Client Components
+'use client';
 
 import { useEffect } from 'react';
 import PageTitle from './_components/PageTitle';
@@ -27,14 +27,14 @@ export default function Error({ error }: ErrorProps) {
           An error log has been automatically created for us to review.
         </div>
         <div className="mb-2">
-          If you'd like to provide more information, please visit the{' '}
+          If you&apos;d like to provide more information, please visit the{' '}
           <Linker href={`${basePath}/contact`}>contact form</Linker> or the{' '}
           <Linker
             href="https://discord.com/channels/781145214752129095/1107628882783391744"
             target="_blank"
             rel="noopener noreferrer"
           >
-            kutty's artbot channel
+            kutty&apos;s artbot channel
           </Linker>{' '}
           on the{' '}
           <Linker
