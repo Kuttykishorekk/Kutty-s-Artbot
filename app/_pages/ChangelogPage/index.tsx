@@ -12,7 +12,6 @@ import styles from './changelog.module.css'
 
 import ReactMarkdown from 'react-markdown'
 import CHANGELOG from '../../../CHANGELOG.md'
-import changelog from '../../../CHANGELOG.md'
 import clsx from 'clsx'
 import Modal from 'app/_modules/Modal'
 
