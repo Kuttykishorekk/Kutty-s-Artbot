@@ -6,7 +6,7 @@ import AppSettings from 'app/_data-models/AppSettings';
 import MaxWidth from 'app/_components/MaxWidth';
 import Select from 'app/_components/Select';
 import Linker from 'app/_components/Linker';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from 'app/_components/Button';
 import { generateThumbnails } from 'app/_utils/db';
 import { deletePendingJobs } from 'app/_controllers/pendingJobsCache';
@@ -39,19 +39,40 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
   const [totalToProcess, setTotalToProcess] = useState(0);
   const [currentProcessIdx, setCurrentProcessIdx] = useState(0);
 
-  useEffect(() => {
-    // Perform side effects here if necessary
-  }, [setComponentState, handleSwitchSelect, handleUpdateSelect]); // Add necessary dependencies
-
-  const handleSwitchSelect = (key: keyof ArtBotSettingsPanelProps['componentState'], value: boolean) => {
+  const handleSwitchSelect = useCallback((key: keyof ArtBotSettingsPanelProps['componentState'], value: boolean) => {
     AppSettings.save(key, value);
     setComponentState({ [key]: value });
-  };
+  }, [setComponentState]);
 
-  const handleUpdateSelect = (key: keyof ArtBotSettingsPanelProps['componentState'], value: any) => {
+  const handleUpdateSelect = useCallback((key: keyof ArtBotSettingsPanelProps['componentState'], value: any) => {
     AppSettings.save(key, value);
     setComponentState({ [key]: value });
-  };
+  }, [setComponentState]);
+
+  const handleGenerateThumbnails = useCallback(() => {
+    setProcessType('thumbnails');
+    generateThumbnails(({ total, current, state }) => {
+      setTotalToProcess(total);
+      setCurrentProcessIdx(current);
+      setProcessState(state);
+    });
+  }, []);
+
+  const handleResetPreferences = useCallback(() => {
+    localStorage.clear();
+    window.location.reload();
+  }, []);
+
+  const handleResetInputCache = useCallback(() => {
+    localStorage.removeItem('PromptInputSettings');
+    window.location.assign(`${window.location.origin}${basePath}`);
+  }, []);
+
+  const handleClearPendingItems = useCallback(async () => {
+    await db.pending.clear();
+    deletePendingJobs();
+    window.location.assign(`${window.location.origin}${basePath}/pending`);
+  }, []);
 
   return (
     <>
@@ -59,10 +80,7 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
         <AlertDialogBox
           title="Are you sure you want to reset your preferences?"
           message="This option will reset all user settings found on this settings page. (e.g., API key, image download preferences, stored input values, etc). Your images will be safe. However, please save your API key before continuing."
-          onConfirmClick={() => {
-            localStorage.clear();
-            window.location.reload();
-          }}
+          onConfirmClick={handleResetPreferences}
           closeModal={() => setComponentState({ showResetConfirmation: false })}
         />
       )}
@@ -100,7 +118,7 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
           <strong>Save on create?</strong>
         </SubSectionTitle>
         <div className="text-xs mb-3">
-          After clicking "create" on the image generation page, preserve the following settings. (All other settings will be remembered.)
+          After clicking &quot;create&quot; on the image generation page, preserve the following settings. (All other settings will be remembered.)
         </div>
         <FlexCol style={{ rowGap: '8px' }}>
           <InputSwitchV2
@@ -127,7 +145,7 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
           checked={componentState.stayOnCreate || false}
         />
         <div className="text-xs mt-2 pl-16">
-          After clicking "create" on the image generation page, stay on the page, rather than show pending items.
+          After clicking &quot;create&quot; on the image generation page, stay on the page, rather than show pending items.
         </div>
       </Section>
       <Section pb={12}>
@@ -222,15 +240,7 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
         </SubSectionTitle>
         <MaxWidth style={{ maxWidth: '240px' }}>
           <Button
-            onClick={() => {
-              setProcessType('thumbnails');
-              // @ts-ignore
-              generateThumbnails(({ total, current, state }) => {
-                setTotalToProcess(total);
-                setCurrentProcessIdx(current);
-                setProcessState(state);
-              });
-            }}
+            onClick={handleGenerateThumbnails}
           >
             Generate thumbnails
           </Button>
@@ -246,8 +256,11 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
         <MaxWidth style={{ maxWidth: '240px' }}>
           <Button
             onClick={() => {
-              //@ts-ignore
-              window.artbotDownloadLogs();
+              if (window.artbotDownloadLogs) {
+                window.artbotDownloadLogs();
+              } else {
+                console.error('Download logs function is not available.');
+              }
             }}
           >
             Download
@@ -289,10 +302,7 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
         <MaxWidth style={{ maxWidth: '240px' }}>
           <Button
             theme="secondary"
-            onClick={() => {
-              localStorage.removeItem('PromptInputSettings');
-              window.location.assign(`${window.location.origin}${basePath}`);
-            }}
+            onClick={handleResetInputCache}
           >
             Reset Input Cache?
           </Button>
@@ -311,11 +321,7 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
         <MaxWidth style={{ maxWidth: '240px' }}>
           <Button
             theme="secondary"
-            onClick={async () => {
-              await db.pending.clear();
-              deletePendingJobs();
-              window.location.assign(`${window.location.origin}${basePath}/pending`);
-            }}
+            onClick={handleClearPendingItems}
           >
             Reset Pending Items?
           </Button>
