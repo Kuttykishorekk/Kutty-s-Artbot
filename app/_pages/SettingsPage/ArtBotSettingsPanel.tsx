@@ -6,7 +6,7 @@ import AppSettings from 'app/_data-models/AppSettings';
 import MaxWidth from 'app/_components/MaxWidth';
 import Select from 'app/_components/Select';
 import Linker from 'app/_components/Linker';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Button } from 'app/_components/Button';
 import { generateThumbnails } from 'app/_utils/db';
 import { deletePendingJobs } from 'app/_controllers/pendingJobsCache';
