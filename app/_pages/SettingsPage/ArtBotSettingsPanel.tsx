@@ -6,7 +6,7 @@ import AppSettings from 'app/_data-models/AppSettings';
 import MaxWidth from 'app/_components/MaxWidth';
 import Select from 'app/_components/Select';
 import Linker from 'app/_components/Linker';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from 'app/_components/Button';
 import { generateThumbnails } from 'app/_utils/db';
 import { deletePendingJobs } from 'app/_controllers/pendingJobsCache';
@@ -38,6 +38,10 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
   const [processState, setProcessState] = useState('');
   const [totalToProcess, setTotalToProcess] = useState(0);
   const [currentProcessIdx, setCurrentProcessIdx] = useState(0);
+
+  useEffect(() => {
+    // Perform side effects here if necessary
+  }, [setComponentState, handleSwitchSelect, handleUpdateSelect]); // Add necessary dependencies
 
   const handleSwitchSelect = (key: keyof ArtBotSettingsPanelProps['componentState'], value: boolean) => {
     AppSettings.save(key, value);
