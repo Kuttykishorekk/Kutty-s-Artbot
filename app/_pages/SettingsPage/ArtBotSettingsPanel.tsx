@@ -18,7 +18,6 @@ import { db } from 'app/_db/dexie';
 
 interface ArtBotSettingsPanelProps {
   componentState: {
-    [key: string]: any; // Define a more specific type if possible
     showResetConfirmation?: boolean;
     theme?: string;
     savePromptOnCreate?: boolean;
@@ -31,7 +30,7 @@ interface ArtBotSettingsPanelProps {
     enableGallerySwipe?: boolean;
     disableNewImageNotification?: boolean;
   };
-  setComponentState: (state: any) => void;
+  setComponentState: (state: Partial<ArtBotSettingsPanelProps['componentState']>) => void;
 }
 
 const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettingsPanelProps) => {
@@ -40,13 +39,12 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
   const [totalToProcess, setTotalToProcess] = useState(0);
   const [currentProcessIdx, setCurrentProcessIdx] = useState(0);
 
-  const handleSwitchSelect = (key: string, value: boolean) => {
+  const handleSwitchSelect = (key: keyof ArtBotSettingsPanelProps['componentState'], value: boolean) => {
     AppSettings.save(key, value);
     setComponentState({ [key]: value });
   };
 
-  const handleUpdateSelect = (key: string, obj: any) => {
-    const { value } = obj;
+  const handleUpdateSelect = (key: keyof ArtBotSettingsPanelProps['componentState'], value: any) => {
     AppSettings.save(key, value);
     setComponentState({ [key]: value });
   };
@@ -61,9 +59,7 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
             localStorage.clear();
             window.location.reload();
           }}
-          closeModal={() => {
-            setComponentState({ showResetConfirmation: false });
-          }}
+          closeModal={() => setComponentState({ showResetConfirmation: false })}
         />
       )}
       <Section>
@@ -82,14 +78,14 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
                 { value: 'system', label: 'system' }
               ]}
               isSearchable={false}
-              onChange={(obj: any) => {
+              onChange={(obj) => {
                 localStorage.setItem('theme', obj.value);
-                handleUpdateSelect('theme', obj);
+                handleUpdateSelect('theme', obj.value);
                 updateTheme(obj.value);
               }}
               value={{
-                value: componentState.theme,
-                label: componentState.theme
+                value: componentState.theme || 'system',
+                label: componentState.theme || 'system'
               }}
             />
           </div>
@@ -99,24 +95,24 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
         <SubSectionTitle>
           <strong>Save on create?</strong>
         </SubSectionTitle>
-        <div style={{ fontSize: '12px', maxWidth: '512px', paddingBottom: '12px' }}>
+        <div className="text-xs mb-3">
           After clicking "create" on the image generation page, preserve the following settings. (All other settings will be remembered.)
         </div>
         <FlexCol style={{ rowGap: '8px' }}>
           <InputSwitchV2
             label={<strong>Prompt?</strong>}
             handleSwitchToggle={() => handleSwitchSelect('savePromptOnCreate', !componentState.savePromptOnCreate)}
-            checked={componentState.savePromptOnCreate}
+            checked={componentState.savePromptOnCreate || false}
           />
           <InputSwitchV2
             label={<strong>Seed?</strong>}
             handleSwitchToggle={() => handleSwitchSelect('saveSeedOnCreate', !componentState.saveSeedOnCreate)}
-            checked={componentState.saveSeedOnCreate}
+            checked={componentState.saveSeedOnCreate || false}
           />
           <InputSwitchV2
             label={<strong>Canvas?</strong>}
             handleSwitchToggle={() => handleSwitchSelect('saveCanvasOnCreate', !componentState.saveCanvasOnCreate)}
-            checked={componentState.saveCanvasOnCreate}
+            checked={componentState.saveCanvasOnCreate || false}
           />
         </FlexCol>
       </Section>
@@ -124,9 +120,9 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
         <InputSwitchV2
           label={<strong>Stay on create page?</strong>}
           handleSwitchToggle={() => handleSwitchSelect('stayOnCreate', !componentState.stayOnCreate)}
-          checked={componentState.stayOnCreate}
+          checked={componentState.stayOnCreate || false}
         />
-        <div style={{ fontSize: '12px', maxWidth: '512px', paddingLeft: '64px' }}>
+        <div className="text-xs mt-2 pl-16">
           After clicking "create" on the image generation page, stay on the page, rather than show pending items.
         </div>
       </Section>
@@ -138,15 +134,15 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
           <div className="flex flex-row gap-2 items-center">
             <Select
               options={[
-                { value: 25, label: 25 },
-                { value: 50, label: 50 },
-                { value: 100, label: 100 }
+                { value: 25, label: '25' },
+                { value: 50, label: '50' },
+                { value: 100, label: '100' }
               ]}
               isSearchable={false}
-              onChange={(obj: any) => handleUpdateSelect('imagesPerPage', obj)}
+              onChange={(obj) => handleUpdateSelect('imagesPerPage', obj.value)}
               value={{
-                value: componentState.imagesPerPage,
-                label: componentState.imagesPerPage
+                value: componentState.imagesPerPage || 25,
+                label: componentState.imagesPerPage?.toString() || '25'
               }}
             />
           </div>
@@ -155,22 +151,22 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
       <Section>
         <SubSectionTitle>
           <strong>Preferred image format</strong>
-          <div className="block w-full mt-2 mb-2 text-xs">
+          <div className="text-xs mt-2 mb-2">
             Choose your preferred format when downloading images from artbot
           </div>
         </SubSectionTitle>
         <MaxWidth style={{ maxWidth: '240px' }}>
           <Select
             isSearchable={false}
-            onChange={(obj: any) => handleUpdateSelect('imageDownloadFormat', obj)}
+            onChange={(obj) => handleUpdateSelect('imageDownloadFormat', obj.value)}
             options={[
               { value: 'jpg', label: 'jpg' },
               { value: 'png', label: 'png' },
               { value: 'webp', label: 'webp' }
             ]}
             value={{
-              value: componentState.imageDownloadFormat,
-              label: componentState.imageDownloadFormat
+              value: componentState.imageDownloadFormat || 'jpg',
+              label: componentState.imageDownloadFormat || 'jpg'
             }}
           />
         </MaxWidth>
@@ -179,19 +175,19 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
         <InputSwitchV2
           label={<strong>Run in background?</strong>}
           handleSwitchToggle={() => handleSwitchSelect('runInBackground', !componentState.runInBackground)}
-          checked={componentState.runInBackground}
+          checked={componentState.runInBackground || false}
         />
-        <div style={{ fontSize: '12px', maxWidth: '512px', paddingLeft: '64px' }}>
-          By default, artbot only runs in the active browser tab in order to try and help prevent your IP address from being throttled. You may disable this behavior if you wish.
+        <div className="text-xs mt-2 pl-16">
+          By default, artbot only runs in the active browser tab to help prevent your IP address from being throttled. You may disable this behavior if you wish.
         </div>
       </Section>
       <Section>
         <InputSwitchV2
           label={<strong>Enable page swipe on image gallery page?</strong>}
           handleSwitchToggle={() => handleSwitchSelect('enableGallerySwipe', !componentState.enableGallerySwipe)}
-          checked={componentState.enableGallerySwipe}
+          checked={componentState.enableGallerySwipe || false}
         />
-        <div style={{ fontSize: '12px', maxWidth: '512px', paddingLeft: '64px' }}>
+        <div className="text-xs mt-2 pl-16">
           On mobile devices, this option allows you to swipe between full pages of images on the <Linker href="/images">images gallery page</Linker>.
         </div>
       </Section>
@@ -199,23 +195,23 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
         <InputSwitchV2
           label={<strong>Disable new image notification?</strong>}
           handleSwitchToggle={() => handleSwitchSelect('disableNewImageNotification', !componentState.disableNewImageNotification)}
-          checked={componentState.disableNewImageNotification}
+          checked={componentState.disableNewImageNotification || false}
         />
-        <div style={{ fontSize: '12px', maxWidth: '512px', paddingLeft: '64px' }}>
+        <div className="text-xs mt-2 pl-16">
           This option disables the new image notification toast that pops up in the top right corner of the web app when artbot receives a new image from the AI Horde backend.
         </div>
       </Section>
       <Section pb={12}>
         <SubSectionTitle>
           <strong>Generate thumbnails?</strong>
-          <div className="block w-full mt-2 mb-2 text-xs">
+          <div className="text-xs mt-2 mb-2">
             artbot recently implemented image thumbnails to help the image gallery become more performant, especially on mobile devices. Older images, created before 2023.03.06, will not have image thumbnails. If you wish, you may manually kick off this process.
           </div>
-          <div className="block w-full mb-2 text-xs">
+          <div className="text-xs mb-2">
             <strong>WARNING:</strong> Depending on the number of images, this could take some time. (On my iPhone 14 Pro, it took about 100 seconds to process 3,000 images)
           </div>
           {processType === 'thumbnails' && totalToProcess > 0 && (
-            <div className="block w-full mb-2 text-xs">
+            <div className="text-xs mb-2">
               {processState} {currentProcessIdx} of {totalToProcess} {processState === 'Analyzing' ? 'images' : 'thumbnails'}.
             </div>
           )}
@@ -239,7 +235,7 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
       <Section pb={12}>
         <SubSectionTitle>
           <strong>Download debugging logs?</strong>
-          <div className="block w-full mt-2 mb-2 text-xs">
+          <div className="text-xs mt-2 mb-2">
             This is really only used in case you're encountering some issues with artbot and are asked to provide some additional logs.
           </div>
         </SubSectionTitle>
@@ -257,13 +253,13 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
       <Section pb={12}>
         <SubSectionTitle>
           <strong>Reset artbot settings in local storage?</strong>
-          <div className="block w-full mt-2 mb-2 text-xs">
+          <div className="text-xs mt-2 mb-2">
             In some instances, artbot settings could have been corrupted. Use this option to reset all user settings found on this settings page (e.g., API key, image download preferences, stored input values, etc).
           </div>
-          <div className="block w-full mt-2 mb-2 text-xs">
+          <div className="text-xs mt-2 mb-2">
             Please save your <strong>API key</strong> before doing this!
           </div>
-          <div className="block w-full mt-2 mb-2 text-xs">
+          <div className="text-xs mt-2 mb-2">
             The prompt history database and image database will not be touched and your images will still be available after this reset.
           </div>
         </SubSectionTitle>
@@ -279,10 +275,10 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
       <Section pb={12}>
         <SubSectionTitle>
           <strong>Reset Input Cache?</strong>
-          <div className="block w-full mt-2 mb-2 text-xs">
+          <div className="text-xs mt-2 mb-2">
             In some instances, input cache settings could have been corrupted. Use this option to reset cached data found on the create page (e.g., steps, guidance, last used sampler, last used model).
           </div>
-          <div className="block w-full mt-2 mb-2 text-xs">
+          <div className="text-xs mt-2 mb-2">
             The prompt history database and image database will not be touched and your images will still be available after this reset.
           </div>
         </SubSectionTitle>
@@ -301,10 +297,10 @@ const ArtBotSettingsPanel = ({ componentState, setComponentState }: ArtBotSettin
       <Section pb={12}>
         <SubSectionTitle>
           <strong>Clear pending items table?</strong>
-          <div className="block w-full mt-2 mb-2 text-xs">
+          <div className="text-xs mt-2 mb-2">
             In some instances, a data corruption issue can occur on the pending items page due to an unknown race condition that hasn't been solved yet. When this happens, you will encounter an error when trying to access the pending items page.
           </div>
-          <div className="block w-full mt-2 mb-2 text-xs">
+          <div className="text-xs mt-2 mb-2">
             The image database will not be touched and your images will still be available after this reset.
           </div>
         </SubSectionTitle>
